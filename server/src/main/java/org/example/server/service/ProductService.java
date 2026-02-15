@@ -16,4 +16,10 @@ public class ProductService {
     public List<Product> getAllProducts() {
         return repo.findAll();
     }
+
+    public Product getProductById(int id) {
+        // sending null is not considered a good practice
+//        return repo.findById(id).orElse(null);
+        return repo.findById(id).orElse(new Product(-1));
+    }
 }
