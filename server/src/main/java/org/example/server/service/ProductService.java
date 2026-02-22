@@ -1,9 +1,12 @@
 package org.example.server.service;
 
+import jakarta.transaction.Transactional;
+import org.example.server.model.Image;
 import org.example.server.model.Product;
 import org.example.server.repo.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -22,4 +25,15 @@ public class ProductService {
 //        return repo.findById(id).orElse(null);
         return repo.findById(id).orElse(new Product(-1));
     }
+
+    @Transactional
+    public void addProduct(Product product, MultipartFile image) throws Exception {
+        Image img = new Image();
+        img.setImageName(image.getOriginalFilename());
+        img.setImageType(image.getContentType());
+        img.setImageData(image.getBytes());
+        product.setImage(img);
+        repo.save(product);
+    }
+
 }

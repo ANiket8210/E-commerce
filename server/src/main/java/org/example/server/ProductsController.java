@@ -2,11 +2,13 @@ package org.example.server;
 
 
 import org.example.server.model.Product;
+import org.example.server.response.APIResponse;
 import org.example.server.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -31,4 +33,18 @@ public class ProductsController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @PostMapping("product")
+    public ResponseEntity<APIResponse<Product>> createProduct(@RequestPart MultipartFile imageFile, @RequestPart Product product){
+        try{
+            productService.addProduct(product,imageFile);
+            APIResponse<Product> response = new APIResponse<>("Product created successfully", product);
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        } catch (Exception e){
+            System.out.println("Error in inserting product"+ e.getMessage());
+            APIResponse<Product> errorResponse = new APIResponse<>("Failed to create product: " + e.getMessage(), null);
+            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }
