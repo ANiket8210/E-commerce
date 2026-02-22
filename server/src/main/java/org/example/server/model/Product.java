@@ -1,10 +1,7 @@
 package org.example.server.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -28,6 +25,10 @@ public class Product {
     private Date releaseDate;
     private boolean productAvailable;
     private int stockQuantity;
+
+    // To automatically persist the Image when saving a Product, add cascade = CascadeType.ALL
+    @OneToOne(cascade = CascadeType.ALL)
+    private Image image;
 
     public Product(int id) {
         this.id = id;
