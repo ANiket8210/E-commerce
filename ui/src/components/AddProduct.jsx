@@ -44,7 +44,6 @@ const AddProduct = () => {
       .then((response) => {
         console.log("Product added successfully:", response.data);
         alert("Product added successfully");
-        console.log(response.data);
         navigate(`/product/${response.data.id}`);
       })
       .catch((error) => {
