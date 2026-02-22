@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 const AddProduct = () => {
   const [product, setProduct] = useState({
@@ -13,6 +14,7 @@ const AddProduct = () => {
     productAvailable: false,
   });
   const [image, setImage] = useState(null);
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -42,6 +44,8 @@ const AddProduct = () => {
       .then((response) => {
         console.log("Product added successfully:", response.data);
         alert("Product added successfully");
+        console.log(response.data);
+        navigate(`/product/${response.data.id}`);
       })
       .catch((error) => {
         console.error("Error adding product:", error);
@@ -182,7 +186,7 @@ const AddProduct = () => {
                 setProduct({ ...product, productAvailable: e.target.checked })
               }
             />
-            <label className="form-check-label">Product Available</label>
+            <label htmlFor="gridCheck" className="form-check-label">Product Available</label>
           </div>
         </div>
         <div className="col-12">
