@@ -36,4 +36,12 @@ public class ProductService {
         repo.save(product);
     }
 
+    public void deleteById(int id) {
+        repo.deleteById(id);
+    }
+
+    public Image getImageById(int productId) {
+        Product product = repo.findById(productId).orElse(new Product(-1));
+        return product.getImage();
+    }
 }

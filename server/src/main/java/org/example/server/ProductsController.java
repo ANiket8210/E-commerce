@@ -1,6 +1,7 @@
 package org.example.server;
 
 
+import org.example.server.model.Image;
 import org.example.server.model.Product;
 import org.example.server.response.APIResponse;
 import org.example.server.service.ProductService;
@@ -47,4 +48,18 @@ public class ProductsController {
         }
     }
 
+    @DeleteMapping("product/{id}")
+    public void deleteProductById(@PathVariable int id){
+        productService.deleteById(id);
+    }
+
+    @GetMapping("/product/{productId}/image")
+    public ResponseEntity<byte[]> getImageByName(@PathVariable int productId){
+        Image image = productService.getImageById(productId);
+        if (image != null){
+        return new ResponseEntity<>(image.getImageData(), HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }
