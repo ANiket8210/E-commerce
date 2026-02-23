@@ -405,11 +405,7 @@ const Cart = () => {
                   style={{ display: "flex", alignContent: "center" }}
                   key={item.id}
                 >
-                  <div className="buttons">
-                    <div className="buttons-liked">
-                      <i className="bi bi-heart"></i>
-                    </div>
-                  </div>
+                 
                   <div>
                     <img
                       src={item.imageUrl}
@@ -478,6 +474,7 @@ const Cart = () => {
         handleCheckout={handleCheckout}
       />
     </div>
+
   );
 };
 
