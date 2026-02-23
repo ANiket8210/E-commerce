@@ -27,7 +27,7 @@ public class ProductService {
     }
 
     @Transactional
-    public void addProduct(Product product, MultipartFile image) throws Exception {
+    public void addOrUpdateProduct(Product product, MultipartFile image) throws Exception {
         Image img = new Image();
         img.setImageName(image.getOriginalFilename());
         img.setImageType(image.getContentType());
@@ -43,5 +43,9 @@ public class ProductService {
     public Image getImageById(int productId) {
         Product product = repo.findById(productId).orElse(new Product(-1));
         return product.getImage();
+    }
+
+    public void updateProduct(Product product, MultipartFile imageFile) {
+
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class ProductsController {
     @PostMapping("product")
     public ResponseEntity<APIResponse<Product>> createProduct(@RequestPart MultipartFile imageFile, @RequestPart Product product){
         try{
-            productService.addProduct(product,imageFile);
+            productService.addOrUpdateProduct(product,imageFile);
             APIResponse<Product> response = new APIResponse<>("Product created successfully", product);
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (Exception e){
@@ -49,8 +50,14 @@ public class ProductsController {
     }
 
     @DeleteMapping("product/{id}")
-    public void deleteProductById(@PathVariable int id){
+    public ResponseEntity<String> deleteProductById(@PathVariable int id){
+        Product product =  productService.getProductById(id);
+        if(product.getId() > 0){
         productService.deleteById(id);
+        return new ResponseEntity<>("Product deleted sucessfully", HttpStatus.OK);
+        }else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        }
     }
 
     @GetMapping("/product/{productId}/image")
@@ -60,6 +67,19 @@ public class ProductsController {
         return new ResponseEntity<>(image.getImageData(), HttpStatus.OK);
         }else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("product/{id}")
+    public ResponseEntity<APIResponse> updateProduct(@PathVariable int id, @RequestPart Product product, @RequestPart MultipartFile imageFile){
+        try{
+            productService.addOrUpdateProduct(product,imageFile);
+            APIResponse<Product> response = new APIResponse<>("Product created successfully", product);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e){
+            System.out.println("Error in inserting product"+ e.getMessage());
+            APIResponse<Product> errorResponse = new APIResponse<>("Failed to create product: " + e.getMessage(), null);
+            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
         }
     }
 }
