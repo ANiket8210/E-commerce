@@ -54,7 +54,7 @@ public class ProductsController {
         Product product =  productService.getProductById(id);
         if(product.getId() > 0){
         productService.deleteById(id);
-        return new ResponseEntity<>("Product deleted sucessfully", HttpStatus.OK);
+        return new ResponseEntity<>("Product deleted successfully", HttpStatus.OK);
         }else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
         }
@@ -71,7 +71,7 @@ public class ProductsController {
     }
 
     @PutMapping("product/{id}")
-    public ResponseEntity<APIResponse> updateProduct(@PathVariable int id, @RequestPart Product product, @RequestPart MultipartFile imageFile){
+    public ResponseEntity<APIResponse<Product>> updateProduct(@PathVariable int id, @RequestPart Product product, @RequestPart MultipartFile imageFile){
         try{
             productService.addOrUpdateProduct(product,imageFile);
             APIResponse<Product> response = new APIResponse<>("Product created successfully", product);
@@ -84,11 +84,10 @@ public class ProductsController {
     }
 
     @GetMapping("products/search")
-    public ResponseEntity<APIResponse<List<Product>>> searchProducts(@RequestParam String keyword){
+    public ResponseEntity<List<Product>> searchProducts(@RequestParam String keyword){
         List<Product> products  = productService.search(keyword);
         if (!products.isEmpty()) {
-            APIResponse<List<Product>> response = new APIResponse<>("Product found successfully", products);
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            return new ResponseEntity<>(products, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
