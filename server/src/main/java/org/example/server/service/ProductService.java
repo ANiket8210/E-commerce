@@ -16,10 +16,12 @@ public class ProductService {
     @Autowired
     private ProductRepo repo;
 
+    @Transactional
     public List<Product> getAllProducts() {
         return repo.findAll();
     }
 
+    @Transactional
     public Product getProductById(int id) {
         // sending null is not considered a good practice
 //        return repo.findById(id).orElse(null);
@@ -40,12 +42,14 @@ public class ProductService {
         repo.deleteById(id);
     }
 
+    @Transactional
     public Image getImageById(int productId) {
         Product product = repo.findById(productId).orElse(new Product(-1));
         return product.getImage();
     }
 
-    public void updateProduct(Product product, MultipartFile imageFile) {
-
+    @Transactional
+    public List<Product> search(String keyword) {
+        return repo.findAllByNameContainingIgnoreCaseOrBrandContainingIgnoreCaseOrDescriptionContainingIgnoreCase(keyword, keyword, keyword);
     }
 }

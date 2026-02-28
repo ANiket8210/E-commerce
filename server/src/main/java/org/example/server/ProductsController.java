@@ -82,4 +82,14 @@ public class ProductsController {
             return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("products/search")
+    public ResponseEntity<APIResponse<List<Product>>> searchProducts(@RequestParam String keyword){
+        List<Product> products  = productService.search(keyword);
+        if (!products.isEmpty()) {
+            APIResponse<List<Product>> response = new APIResponse<>("Product found successfully", products);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 }
