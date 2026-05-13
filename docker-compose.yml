@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - "5000:5000"
     environment:
       SPRING_DATASOURCE_LOCAL_URL: jdbc:postgresql://host.docker.internal:5432/ecommerce
       SPRING_DATASOURCE_USERNAME: postgres
@@ -24,7 +24,7 @@ services:
     depends_on:
       - server
     environment:
-      VITE_API_URL: http://localhost:8080/api
+      VITE_API_URL: http://localhost:5000/api
 
 volumes:
   postgres_data:
