@@ -91,4 +91,8 @@ public class ProductsController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+    @PostMapping("/load")
+    public void loadInitialProducts(){
+        productService.loadProducts();
+    }
 }

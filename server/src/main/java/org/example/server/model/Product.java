@@ -16,6 +16,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)     // this will automatically generate value for id
     private int id;
+    @Column(unique = true)
     private String name;
     private String description;
     private String brand;
