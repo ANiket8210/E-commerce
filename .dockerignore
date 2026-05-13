@@ -1,0 +1,11 @@
+ui/
+.git
+.gitignore
+README.md
+.env
+.DS_Store
+*.log
+.vscode
+.idea
+target/
+*.jar
